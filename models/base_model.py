@@ -17,7 +17,7 @@ class BaseModel:
         self.updated_at = datetime.datetime.today()
 
     def __str__(self) -> str:
-        """[Changing the str method expected output to : 
+        """[Changing the str method expected output to :
         [<class name>] (<self.id>) <self.__dict__>]
 
         Returns:
@@ -31,4 +31,13 @@ class BaseModel:
         self.updated_at = datetime.datetime.today()
 
     def to_dict(self):
-        pass
+        """[Function that returns an specific information about the class in a dict]
+
+        Returns:
+            [type]: [description]
+        """
+        copy = self.__dict__.copy()
+        copy["__class__"] = self.__class__.__name__
+        copy["created_at"] = self.created_at.isoformat()
+        copy["updated_at"] = self.updated_at.isoformat()
+        return copy
