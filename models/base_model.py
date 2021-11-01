@@ -23,10 +23,10 @@ class BaseModel:
         Returns:
             str: [description with the information changed]
         """
-        return f"[{self.__class__.__name__}]({self.id} {self.__dict__})"
+        return f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
 
     def save(self):
-        """[Function that updates the update date]
+        """[Function that updates the update_date]
         """
         self.updated_at = datetime.datetime.today()
 
@@ -34,7 +34,7 @@ class BaseModel:
         """[Function that returns an specific information about the class in a dict]
 
         Returns:
-            [type]: [description]
+            [dict]: [The atttributes with the format required]
         """
         copy = self.__dict__.copy()
         copy["__class__"] = self.__class__.__name__
