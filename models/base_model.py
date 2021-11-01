@@ -2,7 +2,7 @@
 """[Base model module for HBnB Holberton's project]
     """
 import uuid
-import datetime
+from datetime import datetime
 
 
 class BaseModel:
@@ -13,14 +13,14 @@ class BaseModel:
         """[Constructor that initialize a new instance of BaseModel]
         """
         self.id = str(uuid.uuid4())
-        self.created_at = datetime.datetime.today()
-        self.updated_at = datetime.datetime.today()
+        self.created_at = datetime.today()
+        self.updated_at = datetime.today()
         if kwargs:
             for key, value in kwargs.items():
                 if key != "created_at" and key != "updated_at":
                     self.__dict__[key] = value
                 else:
-                    self.__dict__[key] = datetime.datetime.strptime(
+                    self.__dict__[key] = datetime.strptime(
                         value, "%Y-%m-%dT%H:%M:%S.%f")
 
     def __str__(self) -> str:
@@ -35,7 +35,7 @@ class BaseModel:
     def save(self):
         """[Function that updates the update_date]
         """
-        self.updated_at = datetime.datetime.today()
+        self.updated_at = datetime.today()
 
     def to_dict(self):
         """[Function that returns an specific information about the class in a dict]
