@@ -1,5 +1,7 @@
 # AirBnB_clone
 
+![Test Image 1](https://github.com/JuanSebastianGB/AirBnB_clone/blob/main/images/65f4a1dd9c51265f49d0.png?raw=true)
+
 ## Description :memo:
 
 First step towards building a full web application.
