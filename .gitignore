@@ -3,3 +3,7 @@
 
 # Ada Library Information
 *.ali
+
+# Cache generated a vscode
+
+*__pycache__*
