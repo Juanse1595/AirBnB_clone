@@ -1,13 +1,13 @@
 # AirBnB_clone
 
-![Test Image 1](https://github.com/JuanSebastianGB/AirBnB_clone/blob/main/images/65f4a1dd9c51265f49d0.png?raw=true)
+![Logo AirBnb](https://github.com/JuanSebastianGB/AirBnB_clone/blob/main/images/65f4a1dd9c51265f49d0.png?raw=true)
 
 ## Description :memo:
 
 First step towards building a full web application.
 This project is build to implement the essential, which is the back-en console.
 
-
+![For description](https://github.com/JuanSebastianGB/AirBnB_clone/blob/main/images/815046647d23428a14ca.png?raw=true)
 ## Console :computer:
 
 ### Execution
