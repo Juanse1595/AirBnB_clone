@@ -3,6 +3,7 @@
     """
 import uuid
 from datetime import datetime
+from models import storage
 
 
 class BaseModel:
@@ -10,7 +11,7 @@ class BaseModel:
     """
 
     def __init__(self, *args, **kwargs) -> None:
-        """[Constructor that initialize a new instance of BaseModel]
+        """[Constructor that initializes a new instance of BaseModel]
         """
         self.id = str(uuid.uuid4())
         self.created_at = datetime.today()
@@ -22,6 +23,8 @@ class BaseModel:
                 else:
                     self.__dict__[key] = datetime.strptime(
                         value, "%Y-%m-%dT%H:%M:%S.%f")
+        else:
+            storage.new(self)
 
     def __str__(self) -> str:
         """[Changing the str method expected output to :
@@ -36,9 +39,11 @@ class BaseModel:
         """[Function that updates the update_date]
         """
         self.updated_at = datetime.today()
+        storage.save()
 
     def to_dict(self):
-        """[Function that returns an specific information about the class in a dict]
+        """[Function that returns an specific information about the class
+        in a dict]
 
         Returns:
             [dict]: [The atttributes with the format required]
