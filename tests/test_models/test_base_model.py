@@ -2,6 +2,7 @@
 
 """[Unittest for base_model]
     """
+from datetime import datetime
 from unittest import TestCase
 from models import base_model
 import uuid
@@ -29,9 +30,10 @@ class Test_base(TestCase):
     def setUpClass(cls):
         cls.base_test1 = BaseModel()
 
-    def test_instance(self):
+    def test_empty_base(self):
         """[Testing if instance is correcty related]
         """
+        self.assertIsNotNone(self.base_test1)
         self.assertIsInstance(self.base_test1, BaseModel)
 
     def test_id_value(self):
@@ -40,3 +42,16 @@ class Test_base(TestCase):
         base_test2 = BaseModel(id='1')
         with self.assertRaises(ValueError) as _:
             uuid.UUID(base_test2.id, version=4)
+        base_test3 = BaseModel(id=['1'])
+        with self.assertRaises(AttributeError) as _:
+            uuid.UUID(base_test3.id, version=4)
+
+    def test_dates(self):
+        """[Cheking dates are correctly created]
+        """
+        self.assertIsInstance(self.base_test1.created_at, datetime)
+        self.assertIsInstance(self.base_test1.updated_at, datetime)
+    
+    def test__str__(self):
+        """[Cheking correct output when printing]
+        """
