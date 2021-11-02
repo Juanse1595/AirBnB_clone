@@ -19,7 +19,7 @@ This project is build to implement the essential, which is the back-en console.
 
 ## Modules :file_folder:
 
-| Classes | Attributes | Metods
+| Classes | Attributes | Methods
 |--|--|--
 | **BaseModel** | `created_at`<br> `updated_at` | `save`<br>`to_dict`
 | **FileStorage** |  | `all`<br>`new`<br>`save`<br>`reload`
