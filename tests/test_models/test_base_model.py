@@ -1,12 +1,15 @@
 #!/usr/bin/python3
 
+"""[Unittest for base_model]
+    """
 from unittest import TestCase
 from models import base_model
 import pycodestyle
 
 
 class Test_style(TestCase):
-    """[Class created to test style and syntax requirements for base_model class]
+    """[Class created to test style and syntax requirements for the
+    base_model class]
     """
 
     def test_pycode(self):

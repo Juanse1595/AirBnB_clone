@@ -1,34 +1,36 @@
 #!/usr/bin/python3
-"""[summary]
+"""[Module that contains the FileStorage class]
     """
+import json
 
 
 class FileStorage:
-    """[summary]
+    """[Class Engine to serialize to json and deserialize to instances]
     """
-    __File_path = ""
+    __File_path = "file.json"
     __objects = {}
 
     def all(self) -> dict:
-        """[summary]
-
-        Returns:
-            dict: [description]
+        """[returns the dictionary __objects]
         """
-        pass
+        return self.__objects
 
     def new(self, obj) -> None:
-        """[summary]
-
-        Args:
-            obj ([type]): [description]
+        """[sets  in __objects the obj with key <obj class name>.id]
         """
-        pass
+        key = "{}.{}".format(obj.__class__.__name__, obj.id)
+        self.__objects[key] = obj
 
     def save(self):
-        """[summary]
+        """[serializes __objects to the JSON file (path: __file_path)]
+        - Creates the json string and save it to a file
         """
-        pass
+        dict_data = self.__objects
+        """ Transform from dict with objects to dict with dicts """
+        transformed = {key: dict_data[key].to_dict()
+                       for key, _ in dict_data.items()}
+        with open(self.__File_path, mode="w", encoding="utf-8") as f:
+            json.dump(transformed, f)
 
     def reload(self):
         """[summary]
