@@ -16,6 +16,13 @@ First step towards building a full web application.
 This project is build to implement the essential, which is the back-en console.
 
 ![For description](https://github.com/JuanSebastianGB/AirBnB_clone/blob/main/images/815046647d23428a14ca.png?raw=true)
+
+## Modules :file_folder:
+
+| Classes | Attributes | Metods
+|--|--|--
+| **BaseModel** | `created_at`<br> `updated_at` | `save`<br>`to_dict`
+| **FileStorage** |  | `all`<br>`new`<br>`save`<br>`reload`
 ## Console :computer:
 
 ### Execution
@@ -61,7 +68,17 @@ EOF  help  quit
 $
 
 ```
+## Database - storage :package:  
 
+First abstracted storage engine of the project: File storage.
+
+Every time is launched the program, this restores all objects created before. Storing them into a file named 'file.json'.
+
+-   Python doesn’t know how to convert a string to a dictionary (easily)
+-   It’s not human readable
+-   Using this file with another program in Python or other language will be hard.
+
+So, because of that are converted the dictionary representation to a JSON string. JSON is a standard representation of a data structure. With this format, humans can read and all programming languages have a JSON reader and writer.
 
 ## Tests :heavy_check_mark:
 
