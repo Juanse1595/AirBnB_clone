@@ -4,6 +4,7 @@
     """
 from unittest import TestCase
 from models import base_model
+import uuid
 import pycodestyle
 BaseModel = base_model.BaseModel
 
@@ -28,7 +29,14 @@ class Test_base(TestCase):
     def setUpClass(cls):
         cls.base_test1 = BaseModel()
 
-    def test_id_values(self):
-        """[Testing values of ids]
+    def test_instance(self):
+        """[Testing if instance is correcty related]
         """
         self.assertIsInstance(self.base_test1, BaseModel)
+
+    def test_id_value(self):
+        """[Cheking if id is an uuid version 4]
+        """
+        base_test2 = BaseModel(id='1')
+        with self.assertRaises(ValueError) as _:
+            uuid.UUID(base_test2.id, version=4)
