@@ -2,6 +2,7 @@
 """[Module that contains the FileStorage class]
     """
 import json
+from models.base_model import BaseModel
 
 
 class FileStorage:
@@ -29,10 +30,20 @@ class FileStorage:
         """ Transform from dict with objects to dict with dicts """
         transformed = {key: dict_data[key].to_dict()
                        for key, _ in dict_data.items()}
-        with open(self.__File_path, mode="w", encoding="utf-8") as f:
+        with open(self.__File_path, mode="w") as f:
             json.dump(transformed, f)
 
     def reload(self):
-        """[summary]
+        """[deserializes the JSON file to __objects (only if the JSON
+        file (__file_path) exists; otherwise, do nothing. If the file
+        doesn’t exist, no exception should be raised)]
         """
-        pass
+        try:
+            with open(self.__File_path, mode="r", encoding="utf-8") as f:
+                readed = json.loads(f.read())
+            for _, dict_readed in readed.items():
+                class_name = dict_readed.__getitem__('__class__')
+                dict_readed.__delitem__('__class__')
+                self.new(eval(class_name)(**dict_readed))
+        except FileNotFoundError:
+            return

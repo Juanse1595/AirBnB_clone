@@ -3,7 +3,7 @@
     """
 import uuid
 from datetime import datetime
-from models import storage
+import models
 
 
 class BaseModel:
@@ -24,7 +24,7 @@ class BaseModel:
                     self.__dict__[key] = datetime.strptime(
                         value, "%Y-%m-%dT%H:%M:%S.%f")
         else:
-            storage.new(self)
+            models.storage.new(self)
 
     def __str__(self) -> str:
         """[Changing the str method expected output to :
@@ -39,7 +39,7 @@ class BaseModel:
         """[Function that updates the update_date]
         """
         self.updated_at = datetime.today()
-        storage.save()
+        models.storage.save()
 
     def to_dict(self):
         """[Function that returns an specific information about the class
