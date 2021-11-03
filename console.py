@@ -2,6 +2,7 @@
 """[Module of HBnB console]"""
 
 import cmd
+from models.base_model import BaseModel
 
 
 class HBNBCommand(cmd.Cmd):
@@ -14,6 +15,15 @@ class HBNBCommand(cmd.Cmd):
         [type]: [infinite loop]
     """
     prompt = "(hbnb) "
+
+    def do_create(self, input_class):
+        """[Create an instance of BaseModel, prints its id and saves
+        it into de json file]
+        """
+        if input_class == "BaseModel":
+            obj = BaseModel()
+            obj.save()
+            print(obj.id)
 
     def emptyline(self) -> bool:
         """[shouldn’t execute anything]
