@@ -4,6 +4,8 @@
 import cmd
 from models.base_model import BaseModel
 
+classes = {BaseModel}
+
 
 class HBNBCommand(cmd.Cmd):
     """[Class to implement HolbertonBnB console]
@@ -20,7 +22,13 @@ class HBNBCommand(cmd.Cmd):
         """[Create an instance of BaseModel, prints its id and saves
         it into de json file]
         """
-        if input_class == "BaseModel":
+        if not input_class:
+            print("** class name missing **")
+            return
+        if input_class not in classes:
+            print("** class doesn't exist **")
+            return
+        if input_class and input_class == "BaseModel":
             obj = BaseModel()
             obj.save()
             print(obj.id)
