@@ -3,8 +3,10 @@
 
 import cmd
 from models.base_model import BaseModel
+from models import storage
+import shlex
 
-classes = {BaseModel}
+classes = {'BaseModel'}
 
 
 class HBNBCommand(cmd.Cmd):
@@ -32,6 +34,24 @@ class HBNBCommand(cmd.Cmd):
             obj = BaseModel()
             obj.save()
             print(obj.id)
+
+    def do_show(self, args):
+        """[ Prints the string representation of an instance 
+        based on the class name and id]
+        """
+        inputs = shlex.split(args)
+        if not inputs:
+            print('** class name missing **')
+        elif inputs[0] not in classes:
+            print("** class doesn't exist **")
+        elif len(inputs) < 2:
+            print("** instance id missing **")
+        elif '{}.{}'.format(inputs[0], inputs[1]) not in storage.all():
+            print("** no instance found **")
+        else:
+            key = '{}.{}'.format(inputs[0], inputs[1])
+            content = storage.all()[key]
+            print(content)
 
     def emptyline(self) -> bool:
         """[shouldn’t execute anything]
