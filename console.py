@@ -6,7 +6,7 @@ from models.base_model import BaseModel
 from models import storage
 import shlex
 
-classes = {'BaseModel', 'TestModel'}
+classes = {'BaseModel', 'User'}
 
 
 class HBNBCommand(cmd.Cmd):
