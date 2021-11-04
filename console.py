@@ -20,20 +20,20 @@ class HBNBCommand(cmd.Cmd):
     """
     prompt = "(hbnb) "
 
-    def do_create(self, input_class):
+    def do_create(self, args):
         """[Create an instance of BaseModel, prints its id and saves
         it into de json file]
         """
-        if not input_class:
+        args = shlex.split(args)
+        if not args[0]:
             print("** class name missing **")
             return
-        if input_class not in classes:
+        if args[0] not in classes:
             print("** class doesn't exist **")
             return
-        if input_class and input_class == "BaseModel":
-            obj = BaseModel()
-            obj.save()
-            print(obj.id)
+        obj = eval(args[0])()
+        obj.save()
+        print(obj.id)
 
     def do_show(self, args):
         """[ Prints the string representation of an instance 
