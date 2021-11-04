@@ -8,7 +8,7 @@ from models.base_model import BaseModel
 class FileStorage:
     """[Class Engine to serialize to json and deserialize to instances]
     """
-    __File_path = "file.json"
+    __file_path = "file.json"
     __objects = {}
 
     def all(self) -> dict:
@@ -30,7 +30,7 @@ class FileStorage:
         """ Transform from dict with objects to dict with dicts """
         transformed = {key: dict_data[key].to_dict()
                        for key, _ in dict_data.items()}
-        with open(self.__File_path, mode="w") as f:
+        with open(self.__file_path, mode="w") as f:
             json.dump(transformed, f)
 
     def reload(self):
@@ -39,7 +39,7 @@ class FileStorage:
         doesn’t exist, no exception should be raised)]
         """
         try:
-            with open(self.__File_path, mode="r", encoding="utf-8") as f:
+            with open(self.__file_path, mode="r", encoding="utf-8") as f:
                 readed = json.loads(f.read())
             for _, dict_readed in readed.items():
                 class_name = dict_readed.__getitem__('__class__')

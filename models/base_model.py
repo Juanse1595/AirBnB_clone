@@ -18,6 +18,9 @@ class BaseModel:
         self.updated_at = datetime.today()
         if kwargs:
             for key, value in kwargs.items():
+                '''should be if key != created_at and key != updated_at
+                and key != __class__
+                elif key == created_at or key == updated_at'''
                 if key != "created_at" and key != "updated_at":
                     self.__dict__[key] = value
                 else:

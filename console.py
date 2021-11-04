@@ -53,6 +53,22 @@ class HBNBCommand(cmd.Cmd):
             content = storage.all()[key]
             print(content)
 
+    def do_destroy(self, args):
+        """[Deletes an instance based on its id]
+        """
+        inputs = shlex.split(args)
+        if not inputs:
+            print('** class name missing **')
+        elif inputs[0] not in classes:
+            print("** class doesn't exist **")
+        elif len(inputs) < 2:
+            print("** instance id missing **")
+        elif '{}.{}'.format(inputs[0], inputs[1]) not in storage.all():
+            print("** no instance found **")
+        else:
+            key = '{}.{}'.format(inputs[0], inputs[1])
+            del storage.all()[key]
+
     def emptyline(self) -> bool:
         """[shouldn’t execute anything]
         """
