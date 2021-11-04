@@ -1,6 +1,5 @@
 #!/usr/bin/python3
-"""[models/user module for HBnB Holberton's project]
-    """
+"""[models/user module]"""
 from models.base_model import BaseModel
 
 
