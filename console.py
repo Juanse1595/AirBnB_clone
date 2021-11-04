@@ -68,6 +68,7 @@ class HBNBCommand(cmd.Cmd):
         else:
             key = '{}.{}'.format(inputs[0], inputs[1])
             del storage.all()[key]
+            storage.save()
 
     def emptyline(self) -> bool:
         """[shouldn’t execute anything]
