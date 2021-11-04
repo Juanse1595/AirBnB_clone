@@ -36,7 +36,7 @@ class HBNBCommand(cmd.Cmd):
         print(obj.id)
 
     def do_show(self, args):
-        """[ Prints the string representation of an instance 
+        """[ Prints the string representation of an instance
         based on the class name and id]
         """
         inputs = shlex.split(args)
@@ -84,6 +84,38 @@ class HBNBCommand(cmd.Cmd):
                   if key.split(".")[0] == args[0]])
             return
         print("** class doesn't exist **")
+
+    def do_update(self, args):
+        """Updates an instance based on the class name and id by adding
+        or updating attribute (save the change into the JSON file).
+        Ex: $ update BaseModel 1234-1234-1234 email "aibnb@mail.com"."""
+
+        args = shlex.split(args)
+        if not args:
+            print("** class name missing **")
+            return
+        if args[0] not in classes:
+            print("** class doesn't exist **")
+            return
+        if len(args) < 2:
+            print("** instance id missing **")
+            return
+        try:
+            key = '{}.{}'.format(args[0], args[1])
+            dict_1 = storage.all()
+            content = dict_1[key]
+            if len(args) < 3:
+                print("** attribute name missing **")
+                return
+            if len(args) < 4:
+                print("** value missing **")
+                return
+            setattr(content, args[2], args[3])
+            """ content.__dict__[args[2]] = args[3] """
+            content.save()
+        except KeyError:
+            print("** no instance found **")
+            return
 
     def emptyline(self) -> bool:
         """[shouldn’t execute anything]
