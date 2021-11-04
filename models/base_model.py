@@ -21,7 +21,9 @@ class BaseModel:
                 '''should be if key != created_at and key != updated_at
                 and key != __class__
                 elif key == created_at or key == updated_at'''
-                if key != "created_at" and key != "updated_at":
+                if key == "__class__":
+                    pass
+                elif key != "created_at" and key != "updated_at":
                     self.__dict__[key] = value
                 else:
                     self.__dict__[key] = datetime.strptime(

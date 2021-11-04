@@ -43,7 +43,6 @@ class FileStorage:
                 readed = json.loads(f.read())
             for _, dict_readed in readed.items():
                 class_name = dict_readed.__getitem__('__class__')
-                dict_readed.__delitem__('__class__')
                 self.new(eval(class_name)(**dict_readed))
         except FileNotFoundError:
             return
