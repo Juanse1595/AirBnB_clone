@@ -6,7 +6,7 @@ from models.base_model import BaseModel
 from models import storage
 import shlex
 
-classes = {'BaseModel'}
+classes = {'BaseModel', 'TestModel'}
 
 
 class HBNBCommand(cmd.Cmd):
@@ -69,6 +69,21 @@ class HBNBCommand(cmd.Cmd):
             key = '{}.{}'.format(inputs[0], inputs[1])
             del storage.all()[key]
             storage.save()
+
+    def do_all(self, args):
+        """ Prints all string representation of all instances based
+        or not on the class name. Ex: $ all BaseModel or $ all. """
+        args = shlex.split(args)
+        dict_1 = storage.all()
+
+        if not args:
+            print(["".join(str(value)) for value in dict_1.values()])
+            return
+        if args[0] in classes:
+            print([str(value) for key, value in dict_1.items()
+                  if key.split(".")[0] == args[0]])
+            return
+        print("** class doesn't exist **")
 
     def emptyline(self) -> bool:
         """[shouldn’t execute anything]
