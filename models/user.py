@@ -1,22 +1,14 @@
 #!/usr/bin/python3
-'''
-models/user module
-Contains:
-    class User
-'''
-
+"""[models/user module for HBnB Holberton's project]
+    """
 from models.base_model import BaseModel
 
 
 class User(BaseModel):
-    '''
-    Public class attributes:
-        +email
-        +password
-        +first_name
-        +last_name
-    '''
-    email = ''
-    password = ''
-    first_name = ''
-    last_name = ''
+    """[User class]
+    inherits from BaseModel
+    """
+    email = ""
+    password = ""
+    first_name = ""
+    last_name = ""
