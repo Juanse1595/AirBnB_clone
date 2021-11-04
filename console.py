@@ -27,9 +27,8 @@ class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
 
     def do_create(self, args):
-        """[Create an instance of BaseModel, prints its id and saves
-        it into de json file]
-        """
+        """Create an instance of given class, prints its id and saves
+        it into de json file"""
         args = shlex.split(args)
         if not args[0]:
             print("** class name missing **")
@@ -42,9 +41,8 @@ class HBNBCommand(cmd.Cmd):
         print(obj.id)
 
     def do_show(self, args):
-        """[ Prints the string representation of an instance
-        based on the class name and id]
-        """
+        """Prints the string representation of an instance
+        based on the class name and id"""
         inputs = shlex.split(args)
         if not inputs:
             print('** class name missing **')
@@ -60,8 +58,7 @@ class HBNBCommand(cmd.Cmd):
             print(content)
 
     def do_destroy(self, args):
-        """[Deletes an instance based on its id]
-        """
+        """Deletes an instance based on its id"""
         inputs = shlex.split(args)
         if not inputs:
             print('** class name missing **')
@@ -77,7 +74,7 @@ class HBNBCommand(cmd.Cmd):
             storage.save()
 
     def do_all(self, args):
-        """ Prints all string representation of all instances based
+        """Prints all string representation of all instances based
         or not on the class name. Ex: $ all BaseModel or $ all. """
         args = shlex.split(args)
         dict_1 = storage.all()
@@ -124,30 +121,15 @@ class HBNBCommand(cmd.Cmd):
             return
 
     def emptyline(self) -> bool:
-        """[shouldn’t execute anything]
-        """
+        """shouldn’t execute anything"""
         pass
 
     def do_quit(self, arg):
-        """[exits the program]
-
-        Args:
-            arg ([str]): [Arguments to the console]
-
-        Returns:
-            [boolean]: [True]
-        """
+        """exits the program"""
         return True
 
     def do_EOF(self, arg):
-        """[exits the program]
-
-        Args:
-            arg ([str]): [Arguments to the console]
-
-        Returns:
-            [boolean]: [True]
-        """
+        """exits the program with a new line printed"""
         print("")
         return True
 
