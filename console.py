@@ -158,6 +158,20 @@ class HBNBCommand(cmd.Cmd):
             id_inline = line.split('"')
             string += "show('" + args[0] + " " + id_inline[1] + "')"
             eval(string)
+        elif 'count' in args[1]:
+            string += "count('" + args[0] + "')"
+            eval(string)
+
+    def do_count(self, args):
+        """[ retrieve the number of instances of a class:
+        <class name>.count().]
+        """
+        args = shlex.split(args)
+        counter = 0
+        for obj in storage.all().values():
+            if args[0] == obj.__class__.__name__:
+                counter += 1
+        print(counter)
 
 
 if __name__ == '__main__':
