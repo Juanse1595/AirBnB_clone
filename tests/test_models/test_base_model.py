@@ -28,6 +28,7 @@ class Test_base(TestCase):
     """
     @classmethod
     def setUpClass(cls):
+        """Setting up a test object"""
         cls.base_test1 = BaseModel()
 
     def test_empty_base(self):
@@ -53,5 +54,7 @@ class Test_base(TestCase):
         self.assertIsInstance(self.base_test1.updated_at, datetime)
     
     def test__str__(self):
-        """[Cheking correct output when printing]
-        """
+        """[Cheking correct output when printing]"""
+        self.assertIsNotNone(str(self.base_test1))
+    
+    
