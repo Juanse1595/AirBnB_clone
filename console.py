@@ -15,6 +15,12 @@ import shlex
 classes = {'BaseModel', 'User', 'Place', 'State', 'City', 'Amenity', 'Review'}
 
 
+def get_content(args):
+    """[Return the '(<content>)' from a gived string]
+    """
+    return args[args.rfind("(") + 1:args.rfind(")")]
+
+
 class HBNBCommand(cmd.Cmd):
     """[Class to implement HolbertonBnB console]
 
@@ -154,21 +160,25 @@ class HBNBCommand(cmd.Cmd):
         if args[1] == 'all()':
             string += f"all('{args[0]}')"
             eval(string)
-        elif 'show' in args[1]:
-            id_inline = line.split('"')
-            string += "show('{} {}')".format(args[0], id_inline[1])
+        elif 'show(' in args[1]:
+            arguments = get_content(args[1]).split(',')
+            string += "show('{} {}')".format(args[0],
+                                             arguments[0].replace("'", '"'))
             eval(string)
-        elif 'count' in args[1]:
+        elif 'count(' in args[1]:
             string += "count('{}')".format(args[0])
             eval(string)
-        elif 'destroy' in args[1]:
-            id_inline = line.split('"')
-            string += "destroy('{} {}')".format(args[0], id_inline[1])
+        elif 'destroy(' in args[1]:
+            arguments = get_content(args[1]).split(',')
+            string += "destroy('{} {}')".format(args[0],
+                                                arguments[0].replace("'", '"'))
             eval(string)
-        elif 'update' in args[1]:
-            inputs = line.split('"')
-            string += """update('{} "{}" {} "{}"')""".format(
-                args[0], inputs[1], inputs[3], inputs[5])
+        elif 'update(' in args[1]:
+            arguments = get_content(args[1]).split(',')
+            print(arguments)
+            string += """update('{} {} {} {}')""".format(
+                args[0], arguments[0].replace("'", '"'),
+                arguments[1].replace("'", '"'), arguments[2].replace("'", '"'))
             eval(string)
 
     def do_count(self, args):
