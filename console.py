@@ -165,6 +165,12 @@ class HBNBCommand(cmd.Cmd):
             id_inline = line.split('"')
             string += "destroy('" + args[0] + " " + id_inline[1] + "')"
             eval(string)
+        elif 'update' in args[1]:
+            inputs = line.split('"')
+            string += "update('{} {} {} {}')".format(
+                args[0], inputs[1], inputs[3], inputs[5])
+            print(string)
+            eval(string)
 
     def do_count(self, args):
         """[ retrieve the number of instances of a class:
