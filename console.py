@@ -119,12 +119,12 @@ class HBNBCommand(cmd.Cmd):
             if args[2] in floats:
                 try:
                     args[3] = float(args[3])
-                except:
+                except ValueError:
                     args[3] = 0.0
             if args[2] in integers:
                 try:
                     args[3] = int(args[3])
-                except:
+                except ValueError:
                     args[3] = 0
             setattr(content, args[2], args[3])
             """ content.__dict__[args[2]] = args[3] """
@@ -147,16 +147,17 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def default(self, line):
+        """[Implements <>.method sintax]
+        """
         args = line.split('.')
         string = "self.do_"
         if args[1] == 'all()':
-           string += "all('" + args[0] + "')"
-           eval(string)
+            string += "all('" + args[0] + "')"
+            eval(string)
         elif 'show' in args[1]:
             id_inline = line.split('"')
             string += "show('" + args[0] + " " + id_inline[1] + "')"
             eval(string)
-
 
 
 if __name__ == '__main__':
