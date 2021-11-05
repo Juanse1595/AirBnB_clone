@@ -93,6 +93,9 @@ class HBNBCommand(cmd.Cmd):
         or updating attribute (save the change into the JSON file).
         Ex: $ update BaseModel 1234-1234-1234 email "aibnb@mail.com"."""
 
+        integers = {'number_rooms', 'number_bathrooms',
+                    'max_guest', 'price_by_night'}
+        floats = {'latitude', 'longitude'}
         args = shlex.split(args)
         if not args:
             print("** class name missing **")
@@ -113,6 +116,16 @@ class HBNBCommand(cmd.Cmd):
             if len(args) < 4:
                 print("** value missing **")
                 return
+            if args[2] in floats:
+                try:
+                    args[3] = float(args[3])
+                except:
+                    args[3] = 0.0
+            if args[2] in integers:
+                try:
+                    args[3] = int(args[3])
+                except:
+                    args[3] = 0
             setattr(content, args[2], args[3])
             """ content.__dict__[args[2]] = args[3] """
             content.save()
