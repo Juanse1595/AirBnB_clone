@@ -2,7 +2,7 @@
 
 """[Unittest for base_model]
     """
-from datetime import datetime
+from datetime import date, datetime
 from unittest import TestCase
 from models import base_model
 import uuid
@@ -22,6 +22,7 @@ class Test_style(TestCase):
             'models/base_model.py'])
         self.assertEqual(foo.total_errors, 0,
                          "Found code style error (and warnings).")
+
 
 class Test_base(TestCase):
     """[Class for testing all the function of base class]
@@ -52,9 +53,22 @@ class Test_base(TestCase):
         """
         self.assertIsInstance(self.base_test1.created_at, datetime)
         self.assertIsInstance(self.base_test1.updated_at, datetime)
-    
+
     def test__str__(self):
         """[Cheking correct output when printing]"""
-        self.assertIsNotNone(str(self.base_test1))
-    
-    
+        id1 = self.base_test1.id
+        self.assertTrue(f'[BaseModel] ({id1})' in str(self.base_test1))
+
+    def test_save(self):
+        """Checks if updated_at is changed with save method"""
+        self.base_test1.save()
+        self.assertNotEqual(self.base_test1.updated_at,
+                            self.base_test1.created_at)
+
+    def test_to_dict(self):
+        """Checks to_dict method"""
+        base_test4 = BaseModel()
+        dict_base4 = base_test4.to_dict()
+        self.assertIsInstance(dict_base4, dict)
+        self.assertIsInstance(dict_base4['created_at'], str)
+        self.assertIsInstance(dict_base4['updated_at'], str)
