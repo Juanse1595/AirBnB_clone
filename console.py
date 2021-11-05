@@ -146,6 +146,18 @@ class HBNBCommand(cmd.Cmd):
         print("")
         return True
 
+    def default(self, line):
+        args = line.split('.')
+        string = "self.do_"
+        if args[1] == 'all()':
+           string += "all('" + args[0] + "')"
+           eval(string)
+        elif 'show' in args[1]:
+            id_inline = line.split('"')
+            string += "show('" + args[0] + " " + id_inline[1] + "')"
+            eval(string)
+
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
