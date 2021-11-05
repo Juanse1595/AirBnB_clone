@@ -161,6 +161,10 @@ class HBNBCommand(cmd.Cmd):
         elif 'count' in args[1]:
             string += "count('" + args[0] + "')"
             eval(string)
+        elif 'destroy' in args[1]:
+            id_inline = line.split('"')
+            string += "destroy('" + args[0] + " " + id_inline[1] + "')"
+            eval(string)
 
     def do_count(self, args):
         """[ retrieve the number of instances of a class:
