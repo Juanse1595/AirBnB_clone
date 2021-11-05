@@ -152,24 +152,23 @@ class HBNBCommand(cmd.Cmd):
         args = line.split('.')
         string = "self.do_"
         if args[1] == 'all()':
-            string += "all('" + args[0] + "')"
+            string += f"all('{args[0]}')"
             eval(string)
         elif 'show' in args[1]:
             id_inline = line.split('"')
-            string += "show('" + args[0] + " " + id_inline[1] + "')"
+            string += "show('{} {}')".format(args[0], id_inline[1])
             eval(string)
         elif 'count' in args[1]:
-            string += "count('" + args[0] + "')"
+            string += "count('{}')".format(args[0])
             eval(string)
         elif 'destroy' in args[1]:
             id_inline = line.split('"')
-            string += "destroy('" + args[0] + " " + id_inline[1] + "')"
+            string += "destroy('{} {}')".format(args[0], id_inline[1])
             eval(string)
         elif 'update' in args[1]:
             inputs = line.split('"')
-            string += "update('{} {} {} {}')".format(
+            string += """update('{} "{}" {} "{}"')""".format(
                 args[0], inputs[1], inputs[3], inputs[5])
-            print(string)
             eval(string)
 
     def do_count(self, args):
