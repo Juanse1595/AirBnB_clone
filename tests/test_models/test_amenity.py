@@ -77,3 +77,25 @@ class Test_amenity(TestCase):
         """Checks correct attributes assignment"""
         amenity5 = Amenity(name = 'Towels')
         self.assertEqual(amenity5.name, 'Towels')
+
+    def test_creating_with_kwargs(self):
+        """[Checking creation with kwargs]"""
+        obj = Amenity()
+        dictionary = obj.to_dict()
+        new_date = datetime.today()
+        new_date_iso = new_date.isoformat()
+        dictionary["created_at"] = new_date_iso
+        dictionary["updated_at"] = new_date_iso
+        id = dictionary["id"]
+        obj = Amenity(**dictionary)
+        self.assertEqual(obj.id, id)
+        self.assertEqual(obj.created_at, new_date)
+        self.assertEqual(obj.updated_at, new_date)
+
+    def test_save_with_file(self):
+        """ Checks if the generated key is saved in the json file"""
+        obj = Amenity()
+        obj.save()
+        key_id = f"Amenity.{obj.id}"
+        with open("file.json", mode="r", encoding="utf-8") as f:
+            self.assertIn(key_id, f.read())
