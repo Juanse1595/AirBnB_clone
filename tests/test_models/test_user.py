@@ -75,7 +75,7 @@ class Test_base(TestCase):
 
     def test_attributes(self):
         """Checks correct attributes assignment"""
-        user5 = User(email = "abc@email.com")
+        user5 = User(email="abc@email.com")
         user5.password = 123
         user5.first_name = "Jane"
         user5.last_name = "Foster"
