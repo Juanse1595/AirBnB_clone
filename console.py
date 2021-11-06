@@ -156,6 +156,11 @@ class HBNBCommand(cmd.Cmd):
         """[Implements <>.method sintax]
         """
         args = line.split('.')
+        if len(args) < 2 or all([True if element == ""
+                                 else False for element in args]):
+            print(f"*** Unknown syntax: {line}")
+            return False
+
         string = "self.do_"
         if args[1] == 'all()':
             string += f"all('{args[0]}')"
