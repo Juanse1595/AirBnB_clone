@@ -75,7 +75,7 @@ class Test_state(TestCase):
 
     def test_attributes(self):
         """Checks correct attributes assignment"""
-        state5 = State(name = 'California')
+        state5 = State(name='California')
         self.assertEqual(state5.name, 'California')
 
     def test_creating_with_kwargs(self):

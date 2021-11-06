@@ -75,7 +75,7 @@ class Test_place(TestCase):
 
     def test_attributes(self):
         """Checks correct attributes assignment"""
-        place5 = Place(city_id = 123)
+        place5 = Place(city_id=123)
         place5.user_id = 456
         place5.name = "Casa1"
         place5.description = "Big"
@@ -94,7 +94,7 @@ class Test_place(TestCase):
         self.assertEqual(place5.price_by_night, 25)
         self.assertEqual(place5.latitude, 0.5)
         self.assertEqual(place5.longitude, 1.45)
-    
+
     def test_creating_with_kwargs(self):
         """[Checking creation with kwargs]"""
         obj = Place()

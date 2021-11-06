@@ -75,7 +75,7 @@ class Test_amenity(TestCase):
 
     def test_attributes(self):
         """Checks correct attributes assignment"""
-        amenity5 = Amenity(name = 'Towels')
+        amenity5 = Amenity(name='Towels')
         self.assertEqual(amenity5.name, 'Towels')
 
     def test_creating_with_kwargs(self):

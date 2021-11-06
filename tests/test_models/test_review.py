@@ -75,7 +75,7 @@ class Test_review(TestCase):
 
     def test_attributes(self):
         """Checks correct attributes assignment"""
-        review5 = Review(place_id = 123)
+        review5 = Review(place_id=123)
         review5.user_id = 456
         review5.text = 'hello world'
         self.assertEqual(review5.place_id, 123)

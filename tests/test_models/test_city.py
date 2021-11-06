@@ -75,7 +75,7 @@ class Test_city(TestCase):
 
     def test_attributes(self):
         """Checks correct attributes assignment"""
-        city5 = City(state_id = 123)
+        city5 = City(state_id=123)
         city5.name = "Cali"
         self.assertEqual(city5.state_id, 123)
         self.assertEqual(city5.name, 'Cali')
