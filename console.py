@@ -175,12 +175,20 @@ class HBNBCommand(cmd.Cmd):
                                                 arguments[0].replace("'", '"'))
             eval(string)
         elif 'update(' in args[1]:
-            arguments = get_content(args[1]).split(',')
-            print(arguments)
-            string += """update('{} {} {} {}')""".format(
-                args[0], arguments[0].replace("'", '"'),
-                arguments[1].replace("'", '"'), arguments[2].replace("'", '"'))
-            eval(string)
+            if "{" in get_content(args[1]) and "}" in get_content(args[1]):
+                result = ([el.strip(",").replace("{", "").replace("}", "")
+                           .replace(":", "")
+                           for el in shlex.split(get_content(args[1]))])
+                string += "update('{} {} {} {}')".format(
+                    args[0], result[0], result[1], result[2])
+                eval(string)
+            else:
+                arguments = get_content(args[1]).split(',')
+                string += """update('{} {} {} {}')""".format(
+                    args[0], arguments[0].replace("'", '"'),
+                    arguments[1].replace("'", '"'),
+                    arguments[2].replace("'", '"'))
+                eval(string)
 
     def do_count(self, args):
         """[ retrieve the number of instances of a class:
