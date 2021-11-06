@@ -15,11 +15,11 @@ class FileStorage:
     __file_path = "file.json"
     __objects = {}
 
-    def all(self) -> dict:
+    def all(self):
         """[returns the dictionary __objects]"""
         return self.__objects
 
-    def new(self, obj) -> None:
+    def new(self, obj):
         """[sets  in __objects the obj with key <obj class name>.id]"""
         key = "{}.{}".format(obj.__class__.__name__, obj.id)
         self.__objects[key] = obj
@@ -35,8 +35,8 @@ class FileStorage:
     def reload(self):
         """[deserializes the JSON file to __objects if this exists]"""
         try:
-            with open(self.__file_path, mode="r", encoding="utf-8") as f:
-                readed = json.loads(f.read())
+            with open(self.__file_path, mode="r") as f:
+                readed = json.load(f)
             for _, dict_readed in readed.items():
                 class_name = dict_readed.__getitem__('__class__')
                 self.new(eval(class_name)(**dict_readed))
