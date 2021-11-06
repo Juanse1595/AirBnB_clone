@@ -21,7 +21,7 @@ This project is build to implement the essential, which is the back-en console.
 
 | Classes | Attributes | Methods
 |--|--|--
-| **BaseModel** | `created_at`<br> `updated_at` | `save`<br>`to_dict`
+| **BaseModel** | `id`<br>`created_at`<br> `updated_at` | `__init__`<br>`save`<br>`to_dict`<br>`__str__`
 | **FileStorage** |  | `all`<br>`new`<br>`save`<br>`reload`
 ## Console :computer:
 
