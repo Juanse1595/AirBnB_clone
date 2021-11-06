@@ -1,5 +1,6 @@
 #!/usr/bin/python3
-
+"""[Module hat containts the TestFileStorage Class]
+    """
 from models.engine import file_storage
 from models.amenity import Amenity
 from models.base_model import BaseModel
