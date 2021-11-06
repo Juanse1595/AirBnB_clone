@@ -86,7 +86,7 @@ class HBNBCommand(cmd.Cmd):
         dict_1 = storage.all()
 
         if not args:
-            print(["".join(str(value)) for value in dict_1.values()])
+            print([str(value) for value in dict_1.values()])
             return
         if args[0] in classes:
             print([str(value) for key, value in dict_1.items()
@@ -97,7 +97,7 @@ class HBNBCommand(cmd.Cmd):
     def do_update(self, args):
         """Updates an instance based on the class name and id by adding
         or updating attribute (save the change into the JSON file).
-        Ex: $ update BaseModel 1234-1234-1234 email "aibnb@mail.com"."""
+        """
 
         integers = {'number_rooms', 'number_bathrooms',
                     'max_guest', 'price_by_night'}
@@ -112,32 +112,28 @@ class HBNBCommand(cmd.Cmd):
         if len(args) < 2:
             print("** instance id missing **")
             return
-        try:
-            key = '{}.{}'.format(args[0], args[1])
-            dict_1 = storage.all()
-            content = dict_1[key]
-            if len(args) < 3:
-                print("** attribute name missing **")
-                return
-            if len(args) < 4:
-                print("** value missing **")
-                return
-            if args[2] in floats:
-                try:
-                    args[3] = float(args[3])
-                except ValueError:
-                    args[3] = 0.0
-            if args[2] in integers:
-                try:
-                    args[3] = int(args[3])
-                except ValueError:
-                    args[3] = 0
-            setattr(content, args[2], args[3])
-            """ content.__dict__[args[2]] = args[3] """
-            content.save()
-        except KeyError:
+        if '{}.{}'.format(args[0], args[1]) not in storage.all():
             print("** no instance found **")
             return
+        if len(args) < 3:
+            print("** attribute name missing **")
+            return
+        if len(args) < 4:
+            print("** value missing **")
+            return
+        if args[2] in floats:
+            try:
+                args[3] = float(args[3])
+            except ValueError:
+                args[3] = 0.0
+        if args[2] in integers:
+            try:
+                args[3] = int(args[3])
+            except ValueError:
+                args[3] = 0
+        content = storage.all()['{}.{}'.format(args[0], args[1])]
+        setattr(content, args[2], args[3])
+        content.save()
 
     def emptyline(self) -> bool:
         """shouldn’t execute anything"""
