@@ -60,11 +60,16 @@ class Test_base(TestCase):
         self.assertTrue(f'[BaseModel] ({id1})' in str(self.base_test1))
 
     def test_creating_with_kwargs(self):
+        """[Checking creation with kwargs]"""
+        obj = BaseModel()
+        dictionary = obj.to_dict()
         new_date = datetime.today()
         new_date_iso = new_date.isoformat()
-        obj = BaseModel(created_at=new_date_iso,
-                        updated_at=new_date_iso, id="999")
-        self.assertEqual(obj.id, "999")
+        dictionary["created_at"] = new_date_iso
+        dictionary["updated_at"] = new_date_iso
+        id = dictionary["id"]
+        obj = BaseModel(**dictionary)
+        self.assertEqual(obj.id, id)
         self.assertEqual(obj.created_at, new_date)
         self.assertEqual(obj.updated_at, new_date)
 
