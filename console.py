@@ -36,7 +36,7 @@ class HBNBCommand(cmd.Cmd):
         """Create an instance of given class, prints its id and saves
         it into de json file"""
         args = shlex.split(args)
-        if not args[0]:
+        if not args:
             print("** class name missing **")
             return
         if args[0] not in classes:
