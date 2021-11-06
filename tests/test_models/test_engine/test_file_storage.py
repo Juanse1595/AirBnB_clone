@@ -10,6 +10,7 @@ from models.state import State
 from models.user import User
 import unittest
 import pycodestyle
+import models
 
 FileStorage = file_storage.FileStorage
 
@@ -37,3 +38,9 @@ class TestFileStorage(unittest.TestCase):
         dictionary = storage.all()
         self.assertIs(dictionary, storage._FileStorage__objects)
         self.assertEqual(dict, type(dictionary))
+
+    def test_new_instance(self):
+        base_model = BaseModel()
+        models.storage.new(base_model)
+        self.assertIn("{}.{}".format(base_model.__class__.__name__,
+                      base_model.id), models.storage.all().keys())
