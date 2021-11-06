@@ -79,6 +79,14 @@ class Test_base(TestCase):
         self.assertNotEqual(self.base_test1.updated_at,
                             self.base_test1.created_at)
 
+    def test_save_with_file(self):
+        """ Checks if the generated key is saved in the json file"""
+        obj = BaseModel()
+        obj.save()
+        key_id = f"BaseModel.{obj.id}"
+        with open("file.json", mode="r", encoding="utf-8") as f:
+            self.assertIn(key_id, f.read())
+
     def test_to_dict(self):
         """Checks to_dict method"""
         base_test4 = BaseModel()
