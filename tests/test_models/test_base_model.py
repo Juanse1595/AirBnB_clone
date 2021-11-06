@@ -59,6 +59,15 @@ class Test_base(TestCase):
         id1 = self.base_test1.id
         self.assertTrue(f'[BaseModel] ({id1})' in str(self.base_test1))
 
+    def test_creating_with_kwargs(self):
+        new_date = datetime.today()
+        new_date_iso = new_date.isoformat()
+        obj = BaseModel(created_at=new_date_iso,
+                        updated_at=new_date_iso, id="999")
+        self.assertEqual(obj.id, "999")
+        self.assertEqual(obj.created_at, new_date)
+        self.assertEqual(obj.updated_at, new_date)
+
     def test_save(self):
         """Checks if updated_at is changed with save method"""
         self.base_test1.save()
