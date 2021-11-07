@@ -2,6 +2,7 @@
 """[Module of HBnB console]"""
 
 import cmd
+import json
 from models.base_model import BaseModel
 from models.user import User
 from models.place import Place
@@ -11,6 +12,7 @@ from models.amenity import Amenity
 from models.review import Review
 from models import storage
 import shlex
+import re
 
 classes = {'BaseModel', 'User', 'Place', 'State', 'City', 'Amenity', 'Review'}
 
@@ -176,12 +178,14 @@ class HBNBCommand(cmd.Cmd):
             eval(string)
         elif 'update(' in args[1]:
             if "{" in get_content(args[1]) and "}" in get_content(args[1]):
-                result = ([el.strip(",").replace("{", "").replace("}", "")
-                           .replace(":", "")
-                           for el in shlex.split(get_content(args[1]))])
-                string += "update('{} {} {} {}')".format(
-                    args[0], result[0], result[1], result[2])
-                eval(string)
+                coincidence = re.search(
+                    r"\{.*?\}", line).group().replace("'", '"')
+                dictionary = json.loads(coincidence)
+                id = re.search(r'\".*?\"', line).group()
+                [self.do_update('{} {}  {}  {}'.
+                                format(args[0], id, key, value))
+                 for key, value in dictionary.items()]
+
             else:
                 arguments = get_content(args[1]).split(',')
                 string += """update('{} {} {} {}')""".format(
