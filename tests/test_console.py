@@ -2,9 +2,12 @@
 """[Unittest for base_model]"""
 from datetime import date, datetime
 from unittest import TestCase
-from models import base_model
+from models import storage
+import console
 import uuid
 import pycodestyle
+from unittest.mock import patch
+from io import StringIO
 
 
 class Test_style(TestCase):
@@ -27,3 +30,17 @@ class Test_console(TestCase):
     def setUpClass(cls):
         """Setting up a test object"""
         pass
+
+    def test_emptyline(self):
+        """Testing empty line output"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            console.HBNBCommand().onecmd("\n")
+        self.assertEqual(f.getvalue(), '')
+
+    def test_create(self):
+        """Testing create method"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            console.HBNBCommand().onecmd("create BaseModel")
+        key_id = 'BaseModel.' + f.getvalue().split('\n')[0]
+        objects = storage.all()
+        self.assertIn(key_id, objects)
