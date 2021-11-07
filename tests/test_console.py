@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """[Unittest for base_model]"""
 from datetime import date, datetime
+from os import name
 from unittest import TestCase
 from models import storage
 from models.base_model import BaseModel
@@ -27,10 +28,10 @@ class Test_style(TestCase):
 
 class Test_console(TestCase):
     """[Class for testing console]"""
-    @classmethod
-    def setUpClass(cls):
-        """Setting up a test object"""
-        pass
+
+    def test_docstring(self):
+        """Cheking docstring of console"""
+        self.assertTrue(len(console.__doc__) >= 1)
 
     def test_emptyline(self):
         """Testing empty line output"""
@@ -43,6 +44,12 @@ class Test_console(TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
             console.HBNBCommand().onecmd("quit")
         self.assertEqual(f.getvalue(), '')
+
+    def test_EOF(self):
+        """Testing EOF method"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            console.HBNBCommand().onecmd("EOF")
+        self.assertEqual(f.getvalue(), '\n')
 
     def test_create(self):
         """Testing create method"""
@@ -101,3 +108,41 @@ class Test_console(TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
             console.HBNBCommand().onecmd("destroy BaseModel 123")
         self.assertEqual(f.getvalue(), "** no instance found **\n")
+
+    def test_update(self):
+        """Test for update method"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            console.HBNBCommand().onecmd("update")
+        self.assertEqual(f.getvalue(), "** class name missing **\n")
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            console.HBNBCommand().onecmd("update whatever")
+        self.assertEqual(f.getvalue(), "** class doesn't exist **\n")
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            console.HBNBCommand().onecmd("update BaseModel")
+        self.assertEqual(f.getvalue(), "** instance id missing **\n")
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            console.HBNBCommand().onecmd("update BaseModel 123")
+        self.assertEqual(f.getvalue(), "** no instance found **\n")
+
+        b2 = BaseModel()
+        with patch('sys.stdout', new=StringIO()) as f:
+            console.HBNBCommand().onecmd("update BaseModel {}".format(b2.id))
+        self.assertEqual(f.getvalue(), "** attribute name missing **\n")
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            console.HBNBCommand().onecmd("update BaseModel {}".format(b2.id)
+                                         + " name")
+        self.assertEqual(f.getvalue(), "** value missing **\n")
+
+    def test_count(self):
+        """Testing count method"""
+        counter = 0
+        for obj in storage.all().values():
+            if "BaseModel" == obj.__class__.__name__:
+                counter += 1
+        with patch('sys.stdout', new=StringIO()) as f:
+            console.HBNBCommand().onecmd("count BaseModel")
+        self.assertEqual(f.getvalue(), str(counter) + '\n')
