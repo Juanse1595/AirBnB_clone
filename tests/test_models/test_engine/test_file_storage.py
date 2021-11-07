@@ -35,7 +35,7 @@ class Test_style(unittest.TestCase):
         """[Function that check Syntax from Peep8 branch called pycodestyle]
         """
         foo = pycodestyle.StyleGuide(quiet=True).check_files([
-            'models/base_model.py'])
+            'models/engine/file_storage.py'])
         self.assertEqual(foo.total_errors, 0,
                          "Found code style error (and warnings).")
 
