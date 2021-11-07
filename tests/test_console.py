@@ -38,6 +38,12 @@ class Test_console(TestCase):
             console.HBNBCommand().onecmd("\n")
         self.assertEqual(f.getvalue(), '')
 
+    def test_quit(self):
+        """Testing quit method"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            console.HBNBCommand().onecmd("quit")
+        self.assertEqual(f.getvalue(), '')
+
     def test_create(self):
         """Testing create method"""
         with patch('sys.stdout', new=StringIO()) as f:
