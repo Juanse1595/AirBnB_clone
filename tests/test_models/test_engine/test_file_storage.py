@@ -30,6 +30,18 @@ class Test_style(unittest.TestCase):
         self.assertEqual(foo.total_errors, 0,
                          "Found code style error (and warnings).")
 
+    def test_docstring(self):
+        """[Function to test docstrin of the class an the module]
+        """
+        self.assertIsNot(file_storage.__doc__, None,
+                         "file_storage.py needs a docstring")
+        self.assertIsNot(FileStorage.__doc__, None,
+                         "class needs a docstring")
+        self.assertTrue(len(file_storage.__doc__) > 0,
+                        "file_storage.py needs a docstring")
+        self.assertTrue(len(FileStorage.__doc__) > 0,
+                        "class needs a docstring")
+
 
 class TestFileStorage(unittest.TestCase):
     """Testing for FileStorage"""
