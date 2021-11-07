@@ -44,3 +44,11 @@ class Test_console(TestCase):
         key_id = 'BaseModel.' + f.getvalue().split('\n')[0]
         objects = storage.all()
         self.assertIn(key_id, objects)
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            console.HBNBCommand().onecmd("create")
+        self.assertEqual(f.getvalue(), "** class name missing **\n")
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            console.HBNBCommand().onecmd("create whatever")
+        self.assertEqual(f.getvalue(), "** class doesn't exist **\n")
