@@ -3,6 +3,7 @@
 from datetime import date, datetime
 from unittest import TestCase
 from models import storage
+from models.base_model import BaseModel
 import console
 import uuid
 import pycodestyle
@@ -70,3 +71,9 @@ class Test_console(TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
             console.HBNBCommand().onecmd("show BaseModel 123")
         self.assertEqual(f.getvalue(), "** no instance found **\n")
+
+        base1 = BaseModel()
+        with patch('sys.stdout', new=StringIO()) as f:
+            console.HBNBCommand().onecmd("show BaseModel " + base1.id)
+        base1_str = "[BaseModel] ({})".format(base1.id)
+        self.assertIn(base1_str, f.getvalue())
