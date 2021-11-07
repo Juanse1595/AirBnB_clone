@@ -77,3 +77,21 @@ class Test_console(TestCase):
             console.HBNBCommand().onecmd("show BaseModel " + base1.id)
         base1_str = "[BaseModel] ({})".format(base1.id)
         self.assertIn(base1_str, f.getvalue())
+
+    def test_destroy(self):
+        """Test for destroy method"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            console.HBNBCommand().onecmd("destroy")
+        self.assertEqual(f.getvalue(), "** class name missing **\n")
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            console.HBNBCommand().onecmd("destroy whatever")
+        self.assertEqual(f.getvalue(), "** class doesn't exist **\n")
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            console.HBNBCommand().onecmd("destroy BaseModel")
+        self.assertEqual(f.getvalue(), "** instance id missing **\n")
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            console.HBNBCommand().onecmd("destroy BaseModel 123")
+        self.assertEqual(f.getvalue(), "** no instance found **\n")
