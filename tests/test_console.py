@@ -13,7 +13,7 @@ class Test_style(TestCase):
     """
 
     def test_pycode(self):
-        """[Function that check Syntax from Peep8 branch called pycodestyle] 
+        """[Function that check Syntax from Peep8 branch called pycodestyle]
         """
         foo = pycodestyle.StyleGuide(quiet=True).check_files([
             'models/base_model.py'])
