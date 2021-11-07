@@ -52,3 +52,9 @@ class Test_console(TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
             console.HBNBCommand().onecmd("create whatever")
         self.assertEqual(f.getvalue(), "** class doesn't exist **\n")
+
+    def test_show(self):
+        """Testing show method"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            console.HBNBCommand().onecmd("show")
+        self.assertEqual(f.getvalue(), "** class name missing **\n")
