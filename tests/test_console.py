@@ -66,3 +66,7 @@ class Test_console(TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
             console.HBNBCommand().onecmd("show BaseModel")
         self.assertEqual(f.getvalue(), "** instance id missing **\n")
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            console.HBNBCommand().onecmd("show BaseModel 123")
+        self.assertEqual(f.getvalue(), "** no instance found **\n")
