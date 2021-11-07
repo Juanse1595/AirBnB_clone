@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """[Module hat containts the TestFileStorage Class]
     """
+import json
 from typing import Type
 from models.engine import file_storage
 from models.amenity import Amenity
@@ -14,6 +15,7 @@ import unittest
 import pycodestyle
 import models
 import inspect
+import os
 
 FileStorage = file_storage.FileStorage
 classes = {BaseModel, User, Place, State, City, Amenity, Review}
@@ -68,34 +70,15 @@ class TestFileStorage(unittest.TestCase):
     def test_new(self):
         """ Testing new method
         """
-        main_instance = FileStorage
-        base_model = BaseModel()
-        self.assertIn("{}.{}".format(base_model.__class__.__name__,
-                      base_model.id), models.storage.all().keys())
-        amenity = Amenity()
-        self.assertIn("{}.{}".format(amenity.__class__.__name__,
-                      amenity.id), models.storage.all().keys())
-        user = User()
-        self.assertIn("{}.{}".format(user.__class__.__name__,
-                      user.id), models.storage.all().keys())
-        state = State()
-        self.assertIn("{}.{}".format(state.__class__.__name__,
-                      state.id), models.storage.all().keys())
-        city = City()
-        self.assertIn("{}.{}".format(city.__class__.__name__,
-                      city.id), models.storage.all().keys())
-        place = Place()
-        self.assertIn("{}.{}".format(place.__class__.__name__,
-                      place.id), models.storage.all().keys())
-        review = Review()
-        self.assertIn("{}.{}".format(review.__class__.__name__,
-                      review.id), models.storage.all().keys())
-
+        for value in classes:
+            with self.subTest(value=value):
+                obj = value()
+                self.assertIn("{}.{}".format(obj.__class__.__name__,
+                              obj.id), models.storage.all().keys())
         new_file_storage = FileStorage()
         back_up, FileStorage._FileStorage__objects\
             = FileStorage._FileStorage__objects, {}
         dictionary = {}
-
         for value in classes:
             with self.subTest(value=value):
                 new_instance = value()
@@ -108,18 +91,10 @@ class TestFileStorage(unittest.TestCase):
 
     def test_new_without_args(self):
         """[Testing when not arguments provided]"""
-        with self.assertRaises(TypeError):
-            models.storage.new(BaseModel(), '10')
-        with self.assertRaises(TypeError):
-            models.storage.new(Amenity(), '10')
-        with self.assertRaises(TypeError):
-            models.storage.new(User(), '10')
-        with self.assertRaises(TypeError):
-            models.storage.new(State(), '10')
-        with self.assertRaises(TypeError):
-            models.storage.new(City(), '10')
-        with self.assertRaises(TypeError):
-            models.storage.new(Place(), '10')
+        for value in classes:
+            with self.subTest(value):
+                with self.assertRaises(TypeError):
+                    models.storage.new(value(), '10')
 
     def test_new_With_None(self):
         """[Testing when is provided a None to .all method]
@@ -130,31 +105,32 @@ class TestFileStorage(unittest.TestCase):
     def test_save(self):
         """[Test implementation of save after new]
         """
-        base_model = BaseModel()
-        models.storage.new(base_model)
-        user = User()
-        models.storage.new(user)
-        state = State()
-        models.storage.new(state)
-        place = Place()
-        models.storage.new(place)
-        city = City()
-        models.storage.new(city)
-        amenity = Amenity()
-        models.storage.new(amenity)
-        review = Review()
-        models.storage.new(review)
-        models.storage.save()
+        for value in classes:
+            with self.subTest(value=value):
+                obj = value()
+                models.storage.new(obj)
+                models.storage.save()
+                with open("file.json", mode="r", encoding="utf-8") as f:
+                    read_1 = f.read()
+                    self.assertIn("{}.{}".format(
+                        obj.__class__.__name__, obj.id), read_1)
+        os.remove("file.json")
+        new_file_storage = FileStorage()
+        dictionary = {}
+        for value in classes:
+            obj = value()
+            dictionary["{}.{}".format(obj.__class__.__name__, obj.id)] = obj
 
-        with open("file.json", mode="r", encoding="utf-8") as f:
-            read_1 = f.read()
-            self.assertIn(f"BaseModel.{base_model.id}", read_1)
-            self.assertIn(f"User.{user.id}", read_1)
-            self.assertIn(f"State.{state.id}", read_1)
-            self.assertIn(f"Place.{place.id}", read_1)
-            self.assertIn(f"City.{city.id}", read_1)
-            self.assertIn(f"Amenity.{amenity.id}", read_1)
-            self.assertIn(f"Review.{review.id}", read_1)
+        back_up, FileStorage._FileStorage__objects =\
+            FileStorage._FileStorage__objects, dictionary
+        new_file_storage.save()
+        FileStorage._FileStorage__objects = back_up
+        for key, value in dictionary.items():
+            dictionary[key] = value.to_dict()
+        content = json.dumps(dictionary)
+        with open("file.json", mode="r", encoding="utf-8")as f:
+            json_string = f.read()
+        self.assertEqual(json.loads(content), json.loads(json_string))
 
     def test_save_With_None(self):
         """[Test when is provided a None to .save method]
@@ -165,30 +141,15 @@ class TestFileStorage(unittest.TestCase):
     def test_reload(self):
         """[Test implementation of reload after new + save]
         """
-        base_model = BaseModel()
-        models.storage.new(base_model)
-        user = User()
-        models.storage.new(user)
-        state = State()
-        models.storage.new(state)
-        place = Place()
-        models.storage.new(place)
-        city = City()
-        models.storage.new(city)
-        amenity = Amenity()
-        models.storage.new(amenity)
-        review = Review()
-        models.storage.new(review)
-        models.storage.save()
-        models.storage.reload()
-        objects = FileStorage._FileStorage__objects
-        self.assertIn(f"BaseModel.{base_model.id}", objects)
-        self.assertIn(f"User.{user.id}", objects)
-        self.assertIn(f"State.{state.id}", objects)
-        self.assertIn(f"Place.{place.id}", objects)
-        self.assertIn(f"City.{city.id}", objects)
-        self.assertIn(f"Amenity.{amenity.id}", objects)
-        self.assertIn(f"Review.{review.id}", objects)
+        for value in classes:
+            with self.subTest(value=value):
+                obj = value()
+                models.storage.new(obj)
+                models.storage.save()
+                models.storage.reload()
+                objects = FileStorage._FileStorage__objects
+                self.assertIn("{}.{}".format(
+                    obj.__class__.__name__, obj.id), objects)
 
     def test_reload_With_None(self):
         """[Test when is provided a None to .save method]
