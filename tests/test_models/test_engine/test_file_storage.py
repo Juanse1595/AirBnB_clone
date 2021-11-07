@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """[Module hat containts the TestFileStorage Class]
     """
+from typing import Type
 from models.engine import file_storage
 from models.amenity import Amenity
 from models.base_model import BaseModel
@@ -64,3 +65,93 @@ class TestFileStorage(unittest.TestCase):
         review = Review()
         self.assertIn("{}.{}".format(review.__class__.__name__,
                       review.id), models.storage.all().keys())
+
+    def test_new_without_args(self):
+        """[Testing when not arguments provided]"""
+        with self.assertRaises(TypeError):
+            models.storage.new(BaseModel(), '10')
+        with self.assertRaises(TypeError):
+            models.storage.new(Amenity(), '10')
+        with self.assertRaises(TypeError):
+            models.storage.new(User(), '10')
+        with self.assertRaises(TypeError):
+            models.storage.new(State(), '10')
+        with self.assertRaises(TypeError):
+            models.storage.new(City(), '10')
+        with self.assertRaises(TypeError):
+            models.storage.new(Place(), '10')
+
+    def test_new_With_None(self):
+        """[Testing when is provided a None to .all method]
+        """
+        with self.assertRaises(TypeError):
+            models.storage.all(None)
+
+    def test_save(self):
+        """[Test implementation of save after new]
+        """
+        base_model = BaseModel()
+        models.storage.new(base_model)
+        user = User()
+        models.storage.new(user)
+        state = State()
+        models.storage.new(state)
+        place = Place()
+        models.storage.new(place)
+        city = City()
+        models.storage.new(city)
+        amenity = Amenity()
+        models.storage.new(amenity)
+        review = Review()
+        models.storage.new(review)
+        models.storage.save()
+
+        with open("file.json", mode="r", encoding="utf-8") as f:
+            read_1 = f.read()
+            self.assertIn(f"BaseModel.{base_model.id}", read_1)
+            self.assertIn(f"User.{user.id}", read_1)
+            self.assertIn(f"State.{state.id}", read_1)
+            self.assertIn(f"Place.{place.id}", read_1)
+            self.assertIn(f"City.{city.id}", read_1)
+            self.assertIn(f"Amenity.{amenity.id}", read_1)
+            self.assertIn(f"Review.{review.id}", read_1)
+
+    def test_save_With_None(self):
+        """[Test when is provided a None to .save method]
+        """
+        with self.assertRaises(TypeError):
+            models.storage.save(None)
+
+    def test_reload(self):
+        """[Test implementation of reload after new + save]
+        """
+        base_model = BaseModel()
+        models.storage.new(base_model)
+        user = User()
+        models.storage.new(user)
+        state = State()
+        models.storage.new(state)
+        place = Place()
+        models.storage.new(place)
+        city = City()
+        models.storage.new(city)
+        amenity = Amenity()
+        models.storage.new(amenity)
+        review = Review()
+        models.storage.new(review)
+        models.storage.save()
+        models.storage.reload()
+        objects = FileStorage._FileStorage__objects
+        self.assertIn(f"BaseModel.{base_model.id}", objects)
+        self.assertIn(f"User.{user.id}", objects)
+        self.assertIn(f"State.{state.id}", objects)
+        self.assertIn(f"Place.{place.id}", objects)
+        self.assertIn(f"City.{city.id}", objects)
+        self.assertIn(f"Amenity.{amenity.id}", objects)
+        self.assertIn(f"Review.{review.id}", objects)
+
+    def test_reload_With_None(self):
+        """[Test when is provided a None to .save method]
+        """
+        with self.assertRaises(TypeError):
+            models.storage.reload(None)
