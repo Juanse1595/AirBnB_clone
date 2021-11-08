@@ -155,8 +155,8 @@ class Test_console(TestCase):
         self.assertEqual(f.getvalue(), "** attribute name missing **\n")
 
         with patch('sys.stdout', new=StringIO()) as f:
-            console.HBNBCommand().onecmd("update BaseModel {}".format(b2.id)
-                                         + " name")
+            console.HBNBCommand().onecmd(
+                "update BaseModel {} name".format(b2.id))
         self.assertEqual(f.getvalue(), "** value missing **\n")
 
     def test_count(self):
