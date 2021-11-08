@@ -78,6 +78,17 @@ class Test_console(TestCase):
             console.HBNBCommand().onecmd("create whatever")
         self.assertEqual(f.getvalue(), "** class doesn't exist **\n")
 
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.assertFalse(console.HBNBCommand().onecmd("invalid.create()"))
+            self.assertEqual(f.getvalue().strip(), "")
+
+        for value in classes:
+            with self.subTest(value=value):
+                with patch('sys.stdout', new=StringIO()) as f:
+                    self.assertFalse(
+                        console.HBNBCommand().onecmd(f"{value}.create()"))
+                    self.assertEqual(f.getvalue().strip(), "")
+
     def test_show(self):
         """Testing show method"""
         with patch('sys.stdout', new=StringIO()) as f:
@@ -382,3 +393,37 @@ class Test_console_method_count(TestCase):
         with patch("sys.stdout", new=StringIO())as o:
             self.assertFalse(console.HBNBCommand().onecmd("Invalid.count()"))
             self.assertEqual(o.getvalue().strip(), "0")
+
+
+class Test_console_method_create(TestCase):
+    """[Unnitest HBnB console dedicated to create function]
+    """
+    @classmethod
+    def setUpClass(cls) -> None:
+        try:
+            os.rename("file.json", "back_up")
+        except IOError:
+            pass
+        FileStorage._FileStorage__objects = {}
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        try:
+            os.remove("file.json")
+        except IOError:
+            pass
+        try:
+            os.rename("back_up", "file.json")
+        except IOError:
+            pass
+
+    def test_create_method(self):
+        """Testing method create with valid classes"""
+        for value in classes:
+            with self.subTest(value=value):
+                with patch("sys.stdout", new=StringIO())as o:
+                    self.assertFalse(
+                        console.HBNBCommand().onecmd(f"create {value}"))
+                    key = f"{value}.{o.getvalue().strip()}"
+                    self.assertNotEqual(25, len(o.getvalue().strip()))
+                    self.assertIn(key, storage.all().keys())
