@@ -93,6 +93,13 @@ $
 ** no instance found **
 ```
 
+- all: Prints all string representation of all instances based or not on the class name. Usage: all classname or all. Example:
+
+```
+(hbnb) all BaseModel
+["[BaseModel] (49faff9a-6318-451f-87b6-910505c55907) {'created_at': datetime.datetime(2017, 10, 2, 3, 10, 25, 903293), 'id': '49faff9a-6318-451f-87b6-910505c55907', 'updated_at': datetime.datetime(2017, 10, 2, 3, 10, 25, 903300)}"]
+```
+
 ## Database - storage :package:  
 
 First abstracted storage engine of the project: File storage.
