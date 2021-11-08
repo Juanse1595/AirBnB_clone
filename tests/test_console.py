@@ -542,3 +542,114 @@ class Test_console_method_destroy(TestCase):
                     self.assertFalse(console.HBNBCommand().onecmd(
                         f"{value}.destroy({id})"))
                     self.assertNotIn(obj, storage.all())
+
+
+class Test_console_method_destroy(TestCase):
+    """[Unnitest HBnB console dedicated to show function]
+    """
+    @classmethod
+    def setUpClass(cls) -> None:
+        try:
+            os.rename("file.json", "back_up")
+        except IOError:
+            pass
+        FileStorage._FileStorage__objects = {}
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        try:
+            os.remove("file.json")
+        except IOError:
+            pass
+        try:
+            os.rename("back_up", "file.json")
+        except IOError:
+            pass
+
+    def test_show_method(self):
+        """[Testing method show success]
+        """
+        for value in classes:
+            with self.subTest(value=value):
+                with patch("sys.stdout", new=StringIO())as o:
+                    self.assertFalse(
+                        console.HBNBCommand().onecmd(f"create {value}"))
+                    id = o.getvalue().strip()
+                with patch("sys.stdout", new=StringIO())as o:
+                    obj = storage.all()[f"{value}.{id}"]
+                    self.assertFalse(
+                        console.HBNBCommand().onecmd(f"show {value} {id}"))
+                    self.assertEqual(obj.__str__(), o.getvalue().strip())
+
+    def test_show_method_with_dot(self):
+        """[Testing method show success with dot]
+        """
+        for value in classes:
+            with self.subTest(value=value):
+                with patch("sys.stdout", new=StringIO())as o:
+                    self.assertFalse(
+                        console.HBNBCommand().onecmd(f"create {value}"))
+                    id = o.getvalue().strip()
+                with patch("sys.stdout", new=StringIO())as o:
+                    obj = storage.all()[f"{value}.{id}"]
+                    self.assertFalse(
+                        console.HBNBCommand().onecmd(f"{value}.show({id})"))
+                    self.assertEqual(obj.__str__(), o.getvalue().strip())
+
+    def test_show_method_not_instance_found(self):
+        """[Testing method show with not found instance]
+        """
+        for value in classes:
+            with self.subTest(value=value):
+                with patch("sys.stdout", new=StringIO())as o:
+                    self.assertFalse(
+                        console.HBNBCommand().onecmd(f"show {value} 5"))
+                    self.assertEqual("** no instance found **",
+                                     o.getvalue().strip())
+
+    def test_show_method_not_instance_found_with_dot(self):
+        """[Testing method show with not found instance with dot]
+        """
+        for value in classes:
+            with self.subTest(value=value):
+                with patch("sys.stdout", new=StringIO())as o:
+                    self.assertFalse(
+                        console.HBNBCommand().onecmd(f"{value}.show(5)"))
+                    self.assertEqual("** no instance found **",
+                                     o.getvalue().strip())
+
+    def test_show_method_missing_id(self):
+        """[Testing method show missing id]
+        """
+        for value in classes:
+            with self.subTest(value=value):
+                with patch("sys.stdout", new=StringIO())as o:
+                    self.assertFalse(
+                        console.HBNBCommand().onecmd(f"show {value}"))
+                    self.assertEqual("** instance id missing **",
+                                     o.getvalue().strip())
+
+    def test_show_method_missing_id_with_dot(self):
+        """[Testing method show missing id with dot]
+        """
+        for value in classes:
+            with self.subTest(value=value):
+                with patch("sys.stdout", new=StringIO())as o:
+                    self.assertFalse(
+                        console.HBNBCommand().onecmd(f"{value}.show()"))
+                    self.assertEqual("** instance id missing **",
+                                     o.getvalue().strip())
+
+    def test_show_method_missing_class(self):
+        """[Testing method show missing class]
+        """
+        with patch("sys.stdout", new=StringIO())as o:
+            self.assertFalse(
+                console.HBNBCommand().onecmd(f"show"))
+            self.assertEqual("** class name missing **",
+                             o.getvalue().strip())
+        with patch("sys.stdout", new=StringIO())as o:
+            self.assertFalse(
+                console.HBNBCommand().onecmd(f".show()"))
+            self.assertEqual("** class name missing **",
+                             o.getvalue().strip())
