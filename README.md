@@ -27,7 +27,7 @@ This project is build to implement the essential, which is the back-en console.
 
 ### Execution
 
-The console works like this in interactive mode:
+The console is started executing the file console.py in the main directory. From there now you are able to execute any command presented in the list of commands presented below. Here is a simple example of how the console works in interactive mode:
 
 ```
 $ ./console.py
@@ -44,7 +44,7 @@ $
 
 ```
 
-But also in non-interactive mode:
+And also in non-interactive mode:
 
 ```
 $ echo "help" | ./console.py
@@ -68,6 +68,16 @@ EOF  help  quit
 $
 
 ```
+
+### List of commands
+
+- create: Creates a new instance of the selected class, saves it (to the JSON file) and prints the id. Usage: create BaseModel. Example
+
+```
+(hbnb) create BaseModel
+49faff9a-6318-451f-87b6-910505c55907
+```
+
 ## Database - storage :package:  
 
 First abstracted storage engine of the project: File storage.
