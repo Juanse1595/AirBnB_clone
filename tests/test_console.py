@@ -427,3 +427,118 @@ class Test_console_method_create(TestCase):
                     key = f"{value}.{o.getvalue().strip()}"
                     self.assertNotEqual(25, len(o.getvalue().strip()))
                     self.assertIn(key, storage.all().keys())
+
+
+class Test_console_method_destroy(TestCase):
+    """[Unnitest HBnB console dedicated to destroy function]
+    """
+    @classmethod
+    def setUpClass(cls) -> None:
+        try:
+            os.rename("file.json", "back_up")
+        except IOError:
+            pass
+        FileStorage._FileStorage__objects = {}
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        try:
+            os.remove("file.json")
+        except IOError:
+            pass
+        try:
+            os.rename("back_up", "file.json")
+        except IOError:
+            pass
+
+    def test_destroy_method_missing_id(self):
+        """[Testing method destroy with valid classes missing id]
+        """
+        for value in classes:
+            with self.subTest(value=value):
+                with patch("sys.stdout", new=StringIO())as o:
+                    self.assertFalse(
+                        console.HBNBCommand().onecmd(f"destroy {value}"))
+                    self.assertEqual(
+                        "** instance id missing **", o.getvalue().strip())
+
+    def test_destroy_method_with_dot_missing_id(self):
+        """[Testing method destroy with valid classes missing id with dot]
+        """
+        for value in classes:
+            with self.subTest(value=value):
+                with patch("sys.stdout", new=StringIO())as o:
+                    self.assertFalse(
+                        console.HBNBCommand().onecmd(f"{value}.destroy()"))
+                    self.assertEqual(
+                        "** instance id missing **", o.getvalue().strip())
+
+    def test_destroy_method_with_invalid_id(self):
+        """[Testing method destroy with invalid id with dot]
+        """
+        for value in classes:
+            with self.subTest(value=value):
+                with patch("sys.stdout", new=StringIO())as o:
+                    self.assertFalse(
+                        console.HBNBCommand().onecmd(f"destroy {value} 5"))
+                    self.assertEqual(
+                        "** no instance found **", o.getvalue().strip())
+
+    def test_destroy_method_with_invalid_id_with_dot(self):
+        """[Testing method destroy with invalid id with dot]
+        """
+        for value in classes:
+            with self.subTest(value=value):
+                with patch("sys.stdout", new=StringIO())as o:
+                    self.assertFalse(
+                        console.HBNBCommand().onecmd(f"{value}.destroy(5)"))
+                    self.assertEqual(
+                        "** no instance found **", o.getvalue().strip())
+
+    def test_destroy_method_with_invalid_class(self):
+        """[Testing method destroy with invalid class]
+        """
+        with patch("sys.stdout", new=StringIO())as o:
+            self.assertFalse(
+                console.HBNBCommand().onecmd(f"destroy Another 5"))
+            self.assertEqual(
+                "** class doesn't exist **", o.getvalue().strip())
+
+    def test_destroy_method_with_invalid_class_with_dot(self):
+        """[Testing method destroy with invalid class with dot]
+        """
+        with patch("sys.stdout", new=StringIO())as o:
+            self.assertFalse(
+                console.HBNBCommand().onecmd(f"Another.destroy(5)"))
+            self.assertEqual(
+                "** class doesn't exist **", o.getvalue().strip())
+
+    def test_destroy_method_success(self):
+        """[Testing method destroy success]
+        """
+        for value in classes:
+            with self.subTest(value=value):
+                with patch("sys.stdout", new=StringIO())as o:
+                    self.assertFalse(
+                        console.HBNBCommand().onecmd(f"create {value}"))
+                    id = o.getvalue().strip()
+                with patch("sys.stdout", new=StringIO())as o:
+                    obj = storage.all()[f"{value}.{id}"]
+                    self.assertFalse(console.HBNBCommand().onecmd(
+                        f"destroy {value} {id}"))
+                    self.assertNotIn(obj, storage.all())
+
+    def test_destroy_method_success_with_dot(self):
+        """[Testing method destroy success with dot]
+        """
+        for value in classes:
+            with self.subTest(value=value):
+                with patch("sys.stdout", new=StringIO())as o:
+                    self.assertFalse(
+                        console.HBNBCommand().onecmd(f"create {value}"))
+                    id = o.getvalue().strip()
+                with patch("sys.stdout", new=StringIO())as o:
+                    obj = storage.all()[f"{value}.{id}"]
+                    self.assertFalse(console.HBNBCommand().onecmd(
+                        f"{value}.destroy({id})"))
+                    self.assertNotIn(obj, storage.all())
