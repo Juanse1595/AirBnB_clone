@@ -653,3 +653,90 @@ class Test_console_method_destroy(TestCase):
                 console.HBNBCommand().onecmd(f".show()"))
             self.assertEqual("** class name missing **",
                              o.getvalue().strip())
+
+
+class Test_console_method_update(TestCase):
+    """[Unnitest HBnB console dedicated to update function]
+    """
+    @classmethod
+    def setUpClass(cls) -> None:
+        try:
+            os.rename("file.json", "back_up")
+        except IOError:
+            pass
+        FileStorage._FileStorage__objects = {}
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        try:
+            os.remove("file.json")
+        except IOError:
+            pass
+        try:
+            os.rename("back_up", "file.json")
+        except IOError:
+            pass
+
+    def test_update_method(self):
+        """[Testing method update]
+        """
+        for value in classes:
+            with self.subTest(value=value):
+                with patch("sys.stdout", new=StringIO())as o:
+                    self.assertFalse(
+                        console.HBNBCommand().onecmd(f"create {value}"))
+                    id = o.getvalue().strip()
+                self.assertFalse(console.HBNBCommand().onecmd(
+                    f"update {value} {id} random_key 'random_value'"))
+                dictionary = storage.all()[f"{value}.{id}"].__dict__
+                self.assertEqual("random_value", dictionary["random_key"])
+
+        with patch("sys.stdout", new=StringIO())as o:
+            self.assertFalse(
+                console.HBNBCommand().onecmd(f"create Place"))
+            id = o.getvalue().strip()
+        self.assertFalse(console.HBNBCommand().onecmd(
+            f"update Place {id} max_guest 150"))
+        dictionary = storage.all()[f"Place.{id}"].__dict__
+        self.assertEqual(150, dictionary["max_guest"])
+
+        with patch("sys.stdout", new=StringIO())as o:
+            self.assertFalse(
+                console.HBNBCommand().onecmd(f"create Place"))
+            id = o.getvalue().strip()
+        self.assertFalse(console.HBNBCommand().onecmd(
+            f"update Place {id} latitude 20.5"))
+        dictionary = storage.all()[f"Place.{id}"].__dict__
+        self.assertEqual(20.5, dictionary["latitude"])
+
+    def test_update_method_with_dot(self):
+        """[Testing method update with dot]
+        """
+        for value in classes:
+            with self.subTest(value=value):
+                with patch("sys.stdout", new=StringIO())as o:
+                    self.assertFalse(
+                        console.HBNBCommand().onecmd(f"create {value}"))
+                    id = o.getvalue().strip()
+                self.assertFalse(console.HBNBCommand().onecmd(
+                    f"{value}.update({id}, random_key, 'random_value')"))
+                dictionary = storage.all()[f"{value}.{id}"].__dict__
+                self.assertEqual("random_value", dictionary["random_key"])
+
+        with patch("sys.stdout", new=StringIO())as o:
+            self.assertFalse(
+                console.HBNBCommand().onecmd(f"create Place"))
+            id = o.getvalue().strip()
+        self.assertFalse(console.HBNBCommand().onecmd(
+            f"Place.update({id}, max_guest, 150)"))
+        dictionary = storage.all()[f"Place.{id}"].__dict__
+        self.assertEqual(150, dictionary["max_guest"])
+
+        with patch("sys.stdout", new=StringIO())as o:
+            self.assertFalse(
+                console.HBNBCommand().onecmd(f"create Place"))
+            id = o.getvalue().strip()
+        self.assertFalse(console.HBNBCommand().onecmd(
+            f"Place.update({id}, latitude, 20.5)"))
+        dictionary = storage.all()[f"Place.{id}"].__dict__
+        self.assertEqual(2.0, dictionary["latitude"])
