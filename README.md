@@ -27,7 +27,7 @@ This project is build to implement the essential, which is the back-en console.
 
 ### Execution
 
-The console is started executing the file console.py in the main directory. From there now you are able to execute any command presented in the list of commands presented below. Here is a simple example of how the console works in interactive mode:
+The console is started executing the file console.py in the main directory. From there now you are able to execute any command in the list of commands presented below. Here is a simple example of how the console works in interactive mode:
 
 ```
 $ ./console.py
@@ -69,13 +69,20 @@ $
 
 ```
 
-### List of commands
+### List of commands :scroll:
 
-- create: Creates a new instance of the selected class, saves it (to the JSON file) and prints the id. Usage: create BaseModel. Example
+- create: Creates a new instance of the selected class, saves it (to the JSON file) and prints the id. Usage: create classname. Example:
 
 ```
 (hbnb) create BaseModel
 49faff9a-6318-451f-87b6-910505c55907
+```
+
+- show: Prints the string representation of an instance based on the class name and id. Usage: show classname id. Example:
+
+```
+(hbnb) show BaseModel 49faff9a-6318-451f-87b6-910505c55907
+[BaseModel] (49faff9a-6318-451f-87b6-910505c55907) {'created_at': datetime.datetime(2017, 10, 2, 3, 10, 25, 903293), 'id': '49faff9a-6318-451f-87b6-910505c55907', 'updated_at': datetime.datetime(2017, 10, 2, 3, 10, 25, 903300)}
 ```
 
 ## Database - storage :package:  
