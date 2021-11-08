@@ -23,12 +23,12 @@ This project is build to implement the essential, which is the back-en console.
   |--|--|--
   |**BaseModel** |`id`<br>`created_at`<br>  `updated_at` |`__init__`<br>`save`<br>`to_dict`<br>`__str__`
   |**FileStorage**||`all`<br>`new`<br>`save`<br>`reload`
-  |**User**| email <br>password <br>first_name<br>last_name |
-  | **City** | state_id<br>name |
-  | **Place** | city_id<br>user_id<br>name<br>description<br>number_rooms<br>number_bathrooms<br>max_guest<br>price_by_night<br>latitude<br>longitude<br>amenity_ids|
-| **Review** | place_id<br>user_id<br>text|
-| **State** | name |
-| **Amenity** | name|
+  |**User**| `email` <br>`password` <br>`first_name`<br>`last_name` |
+  | **City** | `state_id`<br>`name` |
+  | **Place** | `city_id`<br>`user_id`<br>`name`<br>`description`<br>`number_rooms`<br>`number_bathrooms`<br>`max_guest`<br>`price_by_night`<br>`latitude`<br>`longitude`<br>`amenity_ids`|
+| **Review** | `place_id`<br>`user_id`<br>`text`|
+| **State** | `name` |
+| **Amenity** | `name`|
 ## Console :computer:
 
 ### Execution
