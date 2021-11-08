@@ -1,15 +1,16 @@
 #!/usr/bin/python3
 """[Unittest for base_model]"""
-from datetime import date, datetime
-from os import name
 from unittest import TestCase
 from models import storage
 from models.base_model import BaseModel
 import console
-import uuid
 import pycodestyle
 from unittest.mock import patch
 from io import StringIO
+import os
+from models.engine.file_storage import FileStorage
+
+classes = {'BaseModel', 'User', 'Place', 'State', 'City', 'Amenity', 'Review'}
 
 
 class Test_style(TestCase):
@@ -39,16 +40,20 @@ class Test_console(TestCase):
             self.assertFalse(console.HBNBCommand().onecmd(""))
             self.assertEqual(f.getvalue().strip(), '')
 
+    def test_prompt(self):
+        """[Testing prompt]"""
+        self.assertEqual("(hbnb) ", console.HBNBCommand.prompt)
+
     def test_quit(self):
         """Testing quit method"""
         with patch('sys.stdout', new=StringIO()) as f:
-            console.HBNBCommand().onecmd("quit")
+            self.assertTrue(console.HBNBCommand().onecmd("quit"))
             self.assertEqual(f.getvalue(), '')
 
     def test_EOF(self):
         """Testing EOF method"""
         with patch('sys.stdout', new=StringIO()) as f:
-            console.HBNBCommand().onecmd("EOF")
+            self.assertTrue(console.HBNBCommand().onecmd("EOF"))
             self.assertEqual(f.getvalue(), '\n')
 
     def test_all(self):
@@ -155,7 +160,7 @@ class Test_console(TestCase):
 
 
 class Test_console_command_help(TestCase):
-    """[Unnites HBnB console dedicated to help function]
+    """[Unnitest HBnB console dedicated to help function]
     """
 
     def test_help_method(self):
@@ -253,3 +258,86 @@ EOF  all  count  create  destroy  help  quit  show  update"""
         with patch("sys.stdout", new=StringIO())as o:
             self.assertFalse(console.HBNBCommand().onecmd("help lkdfdfgjk"))
             self.assertEqual(o.getvalue().strip(), e.strip())
+
+
+class Test_console_method_all(TestCase):
+    """[Unnitest HBnB console dedicated to all function]
+    """
+    @classmethod
+    def setUpClass(cls) -> None:
+        try:
+            os.rename("file.json", "back_up")
+        except IOError:
+            pass
+        FileStorage.__objects = {}
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        try:
+            os.remove("file.json")
+        except IOError:
+            pass
+        try:
+            os.rename("back_up", "file.json")
+        except IOError:
+            pass
+
+    def test_all_method(self):
+        """[Testing all method]
+        """
+        with patch("sys.stdout", new=StringIO())as o:
+            for value in classes:
+                with self.subTest(value=value):
+                    self.assertFalse(
+                        console.HBNBCommand().onecmd(f"create {value}"))
+        with patch("sys.stdout", new=StringIO())as o:
+            for value in classes:
+                with self.subTest(value=value):
+                    self.assertFalse(console.HBNBCommand().onecmd("all"))
+                    self.assertIn(value, o.getvalue().strip())
+
+    def test_all_method_dot(self):
+        """[Testing all method .]
+        """
+        with patch("sys.stdout", new=StringIO())as o:
+            for value in classes:
+                with self.subTest(value=value):
+                    self.assertFalse(
+                        console.HBNBCommand().onecmd(f"create {value}"))
+        with patch("sys.stdout", new=StringIO())as o:
+            for value in classes:
+                with self.subTest(value=value):
+                    self.assertFalse(console.HBNBCommand().onecmd(".all()"))
+                    self.assertIn(value, o.getvalue().strip())
+
+    def test_all_method_by_class(self):
+        """[Testing all method by each class]
+        """
+        with patch("sys.stdout", new=StringIO())as o:
+            for value in classes:
+                with self.subTest(value=value):
+                    self.assertFalse(
+                        console.HBNBCommand().onecmd(f"create {value}"))
+        with patch("sys.stdout", new=StringIO())as o:
+            for value in classes:
+                with self.subTest(value=value):
+                    self.assertFalse(
+                        console.HBNBCommand().onecmd(f"all {value}"))
+                    self.assertIn(value, o.getvalue().strip())
+                    self.assertNotIn("Another", o.getvalue().strip())
+
+    def test_all_method_by_class_dot(self):
+        """[Testing all method by each class .]
+        """
+        with patch("sys.stdout", new=StringIO())as o:
+            for value in classes:
+                with self.subTest(value=value):
+                    self.assertFalse(
+                        console.HBNBCommand().onecmd(f"create {value}"))
+        with patch("sys.stdout", new=StringIO())as o:
+            for value in classes:
+                with self.subTest(value=value):
+                    self.assertFalse(
+                        console.HBNBCommand().onecmd(f"{value}.all()"))
+                    self.assertIn(value, o.getvalue().strip())
+                    self.assertNotIn("Another", o.getvalue().strip())
