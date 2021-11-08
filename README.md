@@ -27,7 +27,7 @@ This project is build to implement the essential, which is the back-en console.
 
 ### Execution
 
-The console is started executing the file console.py in the main directory. From there now you are able to execute any command in the list of commands presented below. Here is a simple example of how the console works in interactive mode:
+The console is started executing the file console.py in the main directory. From there now you are able to execute any command in the list of commands presented below. Here is a simple example of how the console works in interactive mode, and using the help command:
 
 ```
 $ ./console.py
@@ -122,9 +122,29 @@ $
 update also works with a dictionary as an input. Usage: classname.update(id in string format, dictionary)
 
 ```
-(hbnb) (hbnb) User.update("38f22813-2753-4d42-b37c-57a17f1e4f88", {'first_name': "John", "age": 89})
+(hbnb) User.update("38f22813-2753-4d42-b37c-57a17f1e4f88", {'first_name': "John", "age": 89})
 (hbnb) User.show("38f22813-2753-4d42-b37c-57a17f1e4f88")
 [User] (38f22813-2753-4d42-b37c-57a17f1e4f88) {'age': 89, 'first_name': 'John', 'last_name': 'Bar', 'created_at': datetime.datetime(2017, 9, 28, 21, 11, 42, 848279), 'updated_at': datetime.datetime(2017, 9, 28, 21, 17, 10, 788143), 'password': 'b9be11166d72e9e3ae7fd407165e4bd2', 'email': 'airbnb@mail.com', 'id': '38f22813-2753-4d42-b37c-57a17f1e4f88'}
+```
+
+- count: returns the number of instances of a class. Usage: classname.count(). Example:
+
+```
+(hbnb) User.count()
+2
+```
+
+- To exit the console you can use quit or EOF commands:
+
+```
+(hbnb) quit
+$ 
+```
+or
+```
+(hbnb) EOF
+
+$
 ```
 
 ## Database - storage :package:  
