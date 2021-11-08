@@ -269,7 +269,7 @@ class Test_console_method_all(TestCase):
             os.rename("file.json", "back_up")
         except IOError:
             pass
-        FileStorage.__objects = {}
+        FileStorage._FileStorage__objects = {}
 
     @classmethod
     def tearDownClass(cls) -> None:
@@ -341,3 +341,44 @@ class Test_console_method_all(TestCase):
                         console.HBNBCommand().onecmd(f"{value}.all()"))
                     self.assertIn(value, o.getvalue().strip())
                     self.assertNotIn("Another", o.getvalue().strip())
+
+
+class Test_console_method_count(TestCase):
+    """[Unnitest HBnB console dedicated to count function]
+    """
+    @classmethod
+    def setUpClass(cls) -> None:
+        try:
+            os.rename("file.json", "back_up")
+        except IOError:
+            pass
+        FileStorage._FileStorage__objects = {}
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        try:
+            os.remove("file.json")
+        except IOError:
+            pass
+        try:
+            os.rename("back_up", "file.json")
+        except IOError:
+            pass
+
+    def test_count_method_valid_class(self):
+        """[Testing method count with valid class]
+        """
+        for value in classes:
+            with self.subTest(value=value):
+                with patch("sys.stdout", new=StringIO())as o:
+                    self.assertFalse(
+                        console.HBNBCommand().onecmd(f"create {value}"))
+                with patch("sys.stdout", new=StringIO())as o:
+                    self.assertFalse(
+                        console.HBNBCommand().onecmd(f"{value}.count()"))
+                    self.assertEqual(o.getvalue().strip(), "1")
+
+    def test_count_method_invalid_class(self):
+        with patch("sys.stdout", new=StringIO())as o:
+            self.assertFalse(console.HBNBCommand().onecmd("Invalid.count()"))
+            self.assertEqual(o.getvalue().strip(), "0")
